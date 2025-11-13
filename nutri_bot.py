@@ -1,5 +1,7 @@
 import logging
 import asyncio
+import os
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
@@ -467,15 +469,13 @@ async def generate_menu(message: types.Message, state: FSMContext, openai_client
 
 async def main():
     """Главная функция запуска бота"""
-    # ВАЖНО: Замените на ваши реальные токены
-    TELEGRAM_TOKEN = 'REMOVED_TELEGRAM_TOKEN'
-    OPENAI_API_KEY = 'REMOVED_OPENAI_API_KEY'
+    load_dotenv()
 
     # Создание клиента OpenAI
-    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+    openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     # Инициализация бота
-    bot = Bot(token=TELEGRAM_TOKEN)
+    bot = Bot(token=os.getenv('TOKEN'))
 
     # Сохраняем клиент OpenAI в workflow_data для доступа из обработчиков
     dp.workflow_data.update(openai_client=openai_client)
